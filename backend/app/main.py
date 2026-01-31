@@ -12,7 +12,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import StreamingResponse
 
 from app.core.config import settings
 from app.core.utils import seconds_to_display, timestamp_to_seconds
@@ -89,16 +89,67 @@ def read_root():
     return {"message": "Welcome to the Semantic Footage Search Engine API"}
 
 
+def _stream_file_range(path: Path, start: int, end: int, chunk_size: int = 8192):
+    """Yield file chunks for the given byte range."""
+    with open(path, "rb") as f:
+        f.seek(start)
+        remaining = end - start + 1
+        while remaining > 0:
+            read_size = min(chunk_size, remaining)
+            data = f.read(read_size)
+            if not data:
+                break
+            remaining -= len(data)
+            yield data
+
+
 @app.get(f"{settings.API_V1_STR}/video")
-def get_video():
-    """Serve the movie file for clip playback. Supports Range requests for seeking."""
+def get_video(request: Request):
+    """Serve the movie file for clip playback. Supports Range requests for seeking (required for HTML5 video)."""
     path = Path(getattr(settings, "VIDEO_PATH", ""))
     if not path.is_file():
         raise HTTPException(status_code=404, detail="Video file not found. Set VIDEO_PATH in config or .env.")
-    return FileResponse(
-        path,
+    file_size = path.stat().st_size
+    range_header = request.headers.get("range")
+    headers = {"Accept-Ranges": "bytes", "Content-Disposition": f'inline; filename="{path.name}"'}
+
+    if range_header and range_header.strip().lower().startswith("bytes="):
+        try:
+            range_spec = range_header.strip()[6:]
+            if "-" in range_spec:
+                start_str, _, end_str = range_spec.partition("-")
+                start_str = start_str.strip()
+                end_str = end_str.strip()
+                if start_str and end_str:
+                    start, end = int(start_str), int(end_str)
+                elif start_str:
+                    start, end = int(start_str), file_size - 1
+                else:
+                    # suffix-byte range: last N bytes (e.g. "-500")
+                    end = file_size - 1
+                    start = max(0, file_size - int(end_str)) if end_str else 0
+            else:
+                start = end = 0
+            end = min(end, file_size - 1)
+            start = max(0, min(start, end))
+            content_length = end - start + 1
+            headers["Content-Range"] = f"bytes {start}-{end}/{file_size}"
+            headers["Content-Length"] = str(content_length)
+            return StreamingResponse(
+                _stream_file_range(path, start, end),
+                status_code=206,
+                media_type="video/mp4",
+                headers=headers,
+            )
+        except (ValueError, TypeError):
+            pass
+    # No range or parse error: return full file
+    headers["Content-Length"] = str(file_size)
+    return StreamingResponse(
+        _stream_file_range(path, 0, file_size - 1),
+        status_code=200,
         media_type="video/mp4",
-        filename=path.name,
+        headers=headers,
     )
 
 

@@ -31,8 +31,12 @@ COPY . .
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
 
-# Create directory for optional data (e.g. VIDEO_PATH, scene data)
-RUN mkdir -p data
+# Create directories for optional data and video (mount video at /data/video at runtime)
+RUN mkdir -p data /data/video
+
+# Optional: set VIDEO_PATH at runtime to the path inside the container where you mount the video file.
+# Example: docker run -v /host/path/to/movie.mp4:/data/video/movie.mp4 -e VIDEO_PATH=/data/video/movie.mp4 ...
+# ENV VIDEO_PATH=/data/video/movie.mp4
 
 # Run the application
 CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
