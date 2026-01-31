@@ -54,6 +54,10 @@ class Settings(BaseSettings):
     SILICONFLOW_RERANK_URL: str = "https://api.siliconflow.com/v1/rerank"
     RERANK_MODEL: str = "Qwen/Qwen3-Reranker-8B"
 
+    # CORS: comma-separated list of allowed origins (e.g. deployed frontend URL)
+    # Example: CORS_ORIGINS=https://myapp.vercel.app,https://www.myapp.com
+    CORS_ORIGINS: str = os.getenv("CORS_ORIGINS", "")
+
     class Config:
         case_sensitive = True
 

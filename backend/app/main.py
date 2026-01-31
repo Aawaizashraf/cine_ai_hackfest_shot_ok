@@ -33,13 +33,13 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
 )
 
-# Allow frontend (e.g. Next.js on port 3000) to call the API
+# CORS: localhost + any origins from env (e.g. deployed frontend)
+_cors_origins = ["http://localhost:3000", "http://127.0.0.1:3000"]
+_extra = getattr(settings, "CORS_ORIGINS", "") or ""
+_cors_origins.extend(o.strip() for o in _extra.split(",") if o.strip())
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
+    allow_origins=_cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
