@@ -1,0 +1,23 @@
+# Environment and secrets (never commit)
+.env
+.env.local
+.env.*.local
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+venv/
+/data
+/shot_ok_the_semantic_cut
+# Movie folder (large video files)
+The Godfather (1972) [1080p]/
+The Godfather (1972) \[1080p]/The.Godfather.1972.1080p.BrRip.x264.BOKUTOX.YIFY.mp4
+The Godfather (1972) \[1080p]/The.Godfather.1972.1080p.BrRip.x264.BOKUTOX.YIFY.srt
+The Godfather (1972) \[1080p]/WWW.YIFY-TORRENTS.COM.jpg
