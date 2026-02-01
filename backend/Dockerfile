@@ -27,8 +27,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # Copy the project into the image
 COPY . .
 
-# Copy video file(s) from backend/video/ into the image (optional: omit this and use a volume mount instead)
-# Put your movie file at backend/video/movie.mp4 (and add backend/video/ to .gitignore to avoid committing large files)
+# Copy video from backend/video/ into the image. Put movie.mp4 in backend/video/ before building.
+# If building from Git (e.g. Coolify), video/ only has .gitkeep — use a volume mount, or build locally (see VIDEO_IN_DOCKER.md).
 COPY video/ /data/video/
 
 # Sync the project
