@@ -6,14 +6,20 @@ import { Search, Loader2, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ClipCard } from "@/components/ClipCard";
-import { searchStream, type SearchResult, type SearchStreamStatus } from "@/lib/api";
+import {
+  searchStream,
+  type SearchResult,
+  type SearchStreamStatus,
+} from "@/lib/api";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [results, setResults] = useState<SearchResult[]>([]);
-  const [statuses, setStatuses] = useState<Record<string, SearchStreamStatus>>({});
+  const [statuses, setStatuses] = useState<Record<string, SearchStreamStatus>>(
+    {},
+  );
 
   const onStatus = useCallback((data: SearchStreamStatus) => {
     setStatuses((prev) => ({ ...prev, [data.id]: data }));
@@ -45,7 +51,13 @@ export default function SearchPage() {
     }
   };
 
-  const stepOrder = ["query_understanding", "embedding", "vector_search", "hybrid", "rerank"];
+  const stepOrder = [
+    "query_understanding",
+    "embedding",
+    "vector_search",
+    "hybrid",
+    "rerank",
+  ];
 
   return (
     <div className="grid-bg relative min-h-screen">
@@ -92,7 +104,8 @@ export default function SearchPage() {
                 disabled={loading}
                 className="min-h-14 shrink-0 rounded-xl px-8 font-semibold text-white shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
                 style={{
-                  background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
+                  background:
+                    "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
                   boxShadow: "0 0 24px -4px rgba(99, 102, 241, 0.4)",
                 }}
               >
@@ -109,6 +122,36 @@ export default function SearchPage() {
                 )}
               </Button>
             </form>
+          </div>
+
+          <div className="mt-6">
+            <p className="mb-3 text-sm font-medium text-zinc-400">
+              Suggested searches — click to use
+            </p>
+            <ul className="flex flex-wrap gap-2">
+              {[
+                "Don Corleone in his office refusing a request",
+                "Wedding scene with the family",
+                "Someone getting angry or losing their temper",
+                "Tense conversation in an office",
+                "Michael and Kay together",
+                "Family gathering or celebration",
+                "Quiet moment before violence",
+                "Someone making an offer they can't refuse",
+                "Where does Sonny say ‘Goddamn FBI",
+                "Scenes showing anger or aggression.",
+              ].map((suggestion) => (
+                <li key={suggestion}>
+                  <button
+                    type="button"
+                    onClick={() => setQuery(suggestion)}
+                    className="rounded-lg border border-white/15 bg-white/5 px-4 py-2 text-left text-sm text-zinc-300 transition-colors hover:bg-white/10 hover:text-white"
+                  >
+                    {suggestion}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {error && (
@@ -130,7 +173,10 @@ export default function SearchPage() {
                     {s.status === "loading" ? (
                       <Loader2 className="size-4 shrink-0 animate-spin text-indigo-400" />
                     ) : (
-                      <span className="size-2.5 shrink-0 rounded-full bg-emerald-500" aria-hidden />
+                      <span
+                        className="size-2.5 shrink-0 rounded-full bg-emerald-500"
+                        aria-hidden
+                      />
                     )}
                     <span>{s.message}</span>
                   </li>

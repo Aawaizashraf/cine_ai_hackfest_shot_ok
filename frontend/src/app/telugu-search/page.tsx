@@ -115,6 +115,39 @@ export default function TeluguSearchPage() {
             </form>
           </div>
 
+          <div className="mt-6">
+            <p className="mb-3 text-sm font-medium text-zinc-400">
+              Suggested searches — click to use
+            </p>
+            <ul className="flex flex-wrap gap-2">
+              {[
+                "Friends having fun or comedy scene",
+                "Wedding or celebration",
+                "Emotional or serious conversation",
+                "Road trip or travel",
+                "Group of friends arguing or joking",
+                "Romantic moment",
+                "Someone giving advice",
+                "Party or night out scene",
+                "Karthink baitiki vellinappudu",
+                "guys doing godawa",
+                "guessing wine",
+                "vivek attitude chupiyadam",
+                "Agnry vivek",
+              ].map((suggestion) => (
+                <li key={suggestion}>
+                  <button
+                    type="button"
+                    onClick={() => setQuery(suggestion)}
+                    className="rounded-lg border border-white/15 bg-white/5 px-4 py-2 text-left text-sm text-zinc-300 transition-colors hover:bg-white/10 hover:text-white"
+                  >
+                    {suggestion}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {error && (
             <div className="mt-6 rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-sm text-red-300">
               {error}

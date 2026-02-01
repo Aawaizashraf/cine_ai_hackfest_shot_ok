@@ -16,12 +16,13 @@ from fastapi.responses import StreamingResponse
 
 from app.core.config import settings
 from app.core.utils import seconds_to_display, timestamp_to_seconds
-from app.models.schemas import IndexRequest, SearchRequest, SearchResult, Scene
+from app.models.schemas import IndexRequest, SearchRequest, SearchResult, Scene, ScreenplayToJsonRequest
 from app.services.embedding import get_embedding
 from app.services.vector_db import vector_db
 from app.services.rerank import rerank
 from app.services.query_understanding import parse_query
 from app.services import tenglish_search
+from app.services.screenplay_to_json import screenplay_to_json as screenplay_to_json_service
 
 _LOG_LEVELS = {"DEBUG": logging.DEBUG, "INFO": logging.INFO, "WARNING": logging.WARNING, "ERROR": logging.ERROR}
 _level = _LOG_LEVELS.get((getattr(settings, "LOG_LEVEL", "INFO") or "INFO").upper(), logging.INFO)
@@ -663,6 +664,19 @@ async def telugu_search_stream(request: SearchRequest):
             "X-Accel-Buffering": "no",
         },
     )
+
+
+@app.post(f"{settings.API_V1_STR}/screenplay-to-json")
+async def screenplay_to_json_endpoint(request: ScreenplayToJsonRequest):
+    """
+    Convert screenplay/transcript text to structured JSON (scene_id, scene_description, clips with dialogue).
+    Isolated route; uses OpenRouter chat with screenplay-to-JSON system prompt.
+    """
+    try:
+        result = screenplay_to_json_service(request.transcript)
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 def index_scenes_sync(scenes, recreate_collection: bool):

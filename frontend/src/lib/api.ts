@@ -149,3 +149,17 @@ export async function teluguSearchStream(
   }
   onResults([]);
 }
+
+/** Screenplay/transcript → structured JSON. Returns the parsed JSON object. */
+export async function screenplayToJson(transcript: string): Promise<unknown> {
+  const res = await fetch(`${API_BASE}/api/v1/screenplay-to-json`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ transcript }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: res.statusText }));
+    throw new Error((err as { detail?: string }).detail ?? "Conversion failed");
+  }
+  return res.json();
+}

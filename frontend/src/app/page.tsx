@@ -61,6 +61,13 @@ export default function Home() {
               <span className="absolute inset-0 rounded-2xl bg-white/0 transition-colors group-hover:bg-white/5" />
               Telugu Search
             </Link>
+            <Link
+              href="/screenplay"
+              className="group relative inline-flex h-16 min-w-[220px] items-center justify-center gap-3 rounded-2xl border border-white/15 bg-white/5 px-10 text-base font-semibold text-white transition-all duration-300 hover:scale-[1.03] hover:bg-white/10 active:scale-[0.98]"
+            >
+              <span className="absolute inset-0 rounded-2xl bg-white/0 transition-colors group-hover:bg-white/5" />
+              Screenplay to JSON
+            </Link>
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 pt-2 text-base text-zinc-500">
@@ -78,66 +85,94 @@ export default function Home() {
             </span>
           </div>
 
+          <div className="relative z-10 mt-4 w-full max-w-5xl rounded-xl border border-white/10 bg-white/5 px-5 py-3 backdrop-blur-sm">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-indigo-400/80">
+              Available for search
+            </p>
+            <ul className="flex justify-between flex-wrap gap-x-6 gap-y-1 text-sm text-zinc-400">
+              <li>
+                <strong className="text-white">The Godfather</strong>
+                <span className="text-zinc-500">
+                  {" "}
+                  — first 30 min · 20 scenes, 62 clips
+                </span>
+              </li>
+              <li>
+                <strong className="text-white">Ee Nagaraniki Emaindi</strong>
+                <span className="text-zinc-500"> — 5 scenes, 25 clips</span>
+              </li>
+            </ul>
+          </div>
+
           <div className="relative z-10 mt-4 grid w-full max-w-5xl grid-cols-1 gap-4 md:grid-cols-5">
             <section className="rounded-xl border border-white/10 bg-white/5 px-5 py-4 backdrop-blur-sm text-left md:col-span-4">
               <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-              <p className="text-xs font-semibold uppercase tracking-widest text-indigo-400/90">
-                Problem Statement 4
-              </p>
-              <h2 className="text-lg font-semibold text-white">
-                Semantic Footage Search Engine
-              </h2>
-            </div>
-            <p className="mb-4 mt-2 text-sm leading-snug text-zinc-400">
-              Editors struggle to find footage using intent-based queries like
-              &ldquo;hesitant reaction before answering.&rdquo; We built a
-              semantic search engine: index from transcripts, natural language
-              search, ranked clips with timestamps and confidence scores.
+                <p className="text-xs font-semibold uppercase tracking-widest text-indigo-400/90">
+                  Problem Statement 4
+                </p>
+                <h2 className="text-lg font-semibold text-white">
+                  Semantic Footage Search Engine
+                </h2>
+              </div>
+              <p className="mb-4 mt-2 text-sm leading-snug text-zinc-400">
+                Editors struggle to find footage using intent-based queries like
+                &ldquo;hesitant reaction before answering.&rdquo; We built a
+                semantic search engine: index from transcripts, natural language
+                search, ranked clips with timestamps and confidence scores.
               </p>
               <div className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
-              <div>
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
-                  Functional
-                </p>
-                <ul className="space-y-1 text-sm text-zinc-400">
-                  <li className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-emerald-500/80" />
-                    Index from transcripts
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-emerald-500/80" />
-                    Natural language queries
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-emerald-500/80" />
-                    Ranked clips + timestamps
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
-                  AI
-                </p>
-                <ul className="space-y-1 text-sm text-zinc-400">
-                  <li className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-violet-500/80" />
-                    Text embeddings
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-violet-500/80" />
-                    Vector DB / similarity
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-violet-500/80" />
-                    Semantic ranking
-                  </li>
-                </ul>
-              </div>
-              <div className="col-span-2 flex flex-wrap items-center gap-x-4 gap-y-1 border-l border-white/10 pl-4 text-xs text-zinc-500 sm:pl-4">
-                <span><strong className="text-zinc-400">Inputs:</strong> Transcripts, natural language query</span>
-                <span><strong className="text-zinc-400">Outputs:</strong> Ranked clips, timestamps, confidence</span>
-                <span><strong className="text-zinc-400">Scope:</strong> Text-only, max 20 clips, 24h</span>
-              </div>
+                <div>
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+                    Functional
+                  </p>
+                  <ul className="space-y-1 text-sm text-zinc-400">
+                    <li className="flex items-center gap-2">
+                      <span className="size-1.5 rounded-full bg-emerald-500/80" />
+                      Index from transcripts
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="size-1.5 rounded-full bg-emerald-500/80" />
+                      Natural language queries
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="size-1.5 rounded-full bg-emerald-500/80" />
+                      Ranked clips + timestamps
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+                    AI
+                  </p>
+                  <ul className="space-y-1 text-sm text-zinc-400">
+                    <li className="flex items-center gap-2">
+                      <span className="size-1.5 rounded-full bg-violet-500/80" />
+                      Text embeddings
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="size-1.5 rounded-full bg-violet-500/80" />
+                      Vector DB / similarity
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="size-1.5 rounded-full bg-violet-500/80" />
+                      Semantic ranking
+                    </li>
+                  </ul>
+                </div>
+                <div className="col-span-2 flex flex-wrap items-center gap-x-4 gap-y-1 border-l border-white/10 pl-4 text-xs text-zinc-500 sm:pl-4">
+                  <span>
+                    <strong className="text-zinc-400">Inputs:</strong>{" "}
+                    Transcripts, natural language query
+                  </span>
+                  <span>
+                    <strong className="text-zinc-400">Outputs:</strong> Ranked
+                    clips, timestamps, confidence
+                  </span>
+                  <span>
+                    <strong className="text-zinc-400">Scope:</strong> Text-only,
+                    max 20 clips, 24h
+                  </span>
+                </div>
               </div>
             </section>
 

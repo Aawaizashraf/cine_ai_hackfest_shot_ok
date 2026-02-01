@@ -69,3 +69,8 @@ class SearchResult(BaseModel):
 class IndexRequest(BaseModel):
     scenes: List[Scene]
     recreate_collection: bool = False
+
+
+class ScreenplayToJsonRequest(BaseModel):
+    """Request body for screenplay/transcript → structured JSON conversion."""
+    transcript: str
