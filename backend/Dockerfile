@@ -27,16 +27,19 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # Copy the project into the image
 COPY . .
 
+# Copy video file(s) from backend/video/ into the image (optional: omit this and use a volume mount instead)
+# Put your movie file at backend/video/movie.mp4 (and add backend/video/ to .gitignore to avoid committing large files)
+COPY video/ /data/video/
+
 # Sync the project
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
 
-# Create directories for optional data and video (mount video at /data/video at runtime)
-RUN mkdir -p data /data/video
+# Create data dir; /data/video already populated by COPY above (or leave empty and use volume mount)
+RUN mkdir -p data
 
-# Optional: set VIDEO_PATH at runtime to the path inside the container where you mount the video file.
-# Example: docker run -v /host/path/to/movie.mp4:/data/video/movie.mp4 -e VIDEO_PATH=/data/video/movie.mp4 ...
-# ENV VIDEO_PATH=/data/video/movie.mp4
+# Default path for video; override with VIDEO_PATH env if your filename is different
+ENV VIDEO_PATH=/data/video/movie.mp4
 
 # Run the application
 CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
